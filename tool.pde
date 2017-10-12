@@ -148,6 +148,34 @@ int direction(float startX, float startY) {
   return -1;
 }
 
+boolean distMouse(float x, float y, float r) {
+  return (dist(mouseX, mouseY, x, y) < r);
+}
+
+boolean button(float x, float y, float r, color OutColor, color InColor) {
+  boolean flag = false;
+  pushMatrix();
+  pushStyle();
+    translate(x, y);
+    ellipseMode(RADIUS);
+    if(dist(mouseX, mouseY, x, y) < r) {
+      noStroke();
+      fill(InColor);
+      arc( 0f, 0f, r, r, 0f, TAU );
+      noFill();
+      stroke(InColor);
+      arc( 0f, 0f, r + PI * 0.75f, r + PI * 0.75f, 0f, TAU );
+      flag = true;
+    } else {
+      noStroke();
+      fill(OutColor);
+      arc( 0f, 0f, r, r, 0f, TAU );
+    }
+  popStyle();
+  popMatrix();
+  return flag;
+}
+
 void boxText(String Text, float x, float y, int fontSize, int maxWidth, color Color) {
   pushStyle();
   {

@@ -1,3 +1,6 @@
+import controlP5.*;
+ControlP5 cp5;
+
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
@@ -37,13 +40,25 @@ int AnimeTitle = 0;
 float arrayX[] = { .2f, .5f, .8f, .35f, .65f, .2f, .5f, .8f };
 float arrayY[] = { .4f, .4f, .4f, .6f, .6f, .8f, .8f, .8f };
 String seas[] = { "Blue Sea", "Green Sea", "Red Sea", "Black Sea" };
-String seasDescription[] = { "For Beginner & Normal Bubble", "A Little Difficult & Turned Bubble Join!", "Complex Puzzle & Locked Bubble Join!", "Extra Stage & Free Edit" };
+String seasDescription[] = { "For Beginner & Normal Bubble",
+  "A Little Difficult & Turned Bubble Join!",
+  "Complex Puzzle & Locked Bubble Join!",
+  "Extra Stage & Free Edit" };
 color seaColor[] = { color(0, 100, 200), color(0, 200, 60), color(200, 50, 20), color(50, 50, 50) };
 color seaWideColor[] = { color(0, 40, 30), color(0, 30, 40), color(20, 20, 10), color(50, 50, 50) };
 int selectSea = 0;
 int seaSlide = 0;
 boolean isOverSea = false;
 int titleShift = 0;
+
+Space Edit;
+color LowColor, HighColor;
+boolean whichColor = false;
+int RedBar, GreenBar, BlueBar;
+int BubbleMode = 0;
+int BubbleNumber = 0;
+String Title = "";
+Space Board;
 
 void setup() {
   size(480, 320);
@@ -63,6 +78,69 @@ void setup() {
   snd[9] = minim.loadFile("sound/seaswitch.mp3");
   snd[10] = minim.loadFile("sound/title.mp3"); snd[10].cue(200);
   snd[11] = minim.loadFile("sound/stageselect.mp3");
+  
+  //GUI読み込み
+  cp5 = new ControlP5(this);
+  
+  cp5.addSlider("RedBar")
+    .setLabel("R")
+    .setPosition(10, 10)
+    .setSize(128, 10)
+    .setRange(0, 255)
+    .setValue(0)
+    .setColorActive(color(128, 0, 0))
+    .setColorBackground(color(32, 0, 0))
+    .setColorForeground(color(128))
+    .setColorLabel(color(0))
+    .setColorValue(color(255))
+    .hide()
+    ;
+  cp5.addSlider("GreenBar")
+    .setLabel("G")
+    .setPosition(10, 25)
+    .setSize(128, 10)
+    .setRange(0, 255)
+    .setValue(0)
+    .setColorActive(color(128, 0, 0))
+    .setColorBackground(color(32, 0, 0))
+    .setColorForeground(color(128))
+    .setColorLabel(color(0))
+    .setColorValue(color(255))
+    .hide()
+    ;
+  cp5.addSlider("BlueBar")
+    .setLabel("B")
+    .setPosition(10, 40)
+    .setSize(128, 10)
+    .setRange(0, 255)
+    .setValue(0)
+    .setColorActive(color(128, 0, 0))
+    .setColorBackground(color(32, 0, 0))
+    .setColorForeground(color(128))
+    .setColorLabel(color(0))
+    .setColorValue(color(255))
+    .hide()
+    ;
+  
+  cp5.addTextfield("Title")
+    .setLabelVisible(false)
+    .setText("No Title")
+    .setPosition(width * .4f - 10, 10)
+    .setSize( int(width * .6f), 24)
+    .setFont(createFont("BookAntiqua", 18))
+    .setFocus(true)
+    .setColor(color(255))
+    .hide()
+    ;
+  
+  Edit = new Space(0f, 0f, 32f, color(0), color(0));
+  Board = new Space(10 + width * .82 / 9f * 0.4f, height * .9f, width * .82f / 9f, color(0), color(0));
+  for(int n = 1; n < 10; n++) Board.List.add( new Number(n, n - 1, 0, false, false));
+  Board.List.add(new Number(1, 9, -5, false, false));
+  Board.List.add(new Number(1, 0, -1, false, true));
+  Board.List.add(new Number(1, 0, -2, true, false));
+  Board.List.add(new Number(1, 0, -3, false, false));
+  
   
   //ステージ読み込み
   space = new Space();
@@ -125,8 +203,6 @@ void setup() {
     stage.add(fileSpace);
   }
   
-  //初期データ
-  //space.Copy((Space) stage.get(playStage));
 }
 
 void draw() {
@@ -138,7 +214,8 @@ void draw() {
         stroke(0, 180, 255 - n, 70 + 10 * sin(radians(AnimeTitle * 2)));
         line(0, n, width, n);
       }
-      stroke(0, 60 + 30 * cos(radians(AnimeTitle)), 150 + 100 * cos(radians(AnimeTitle * 2)), map(constrain(AnimeTitle, 0, 600), 0, 600, 0, 255));
+      stroke(0, 60 + 30 * cos(radians(AnimeTitle)), 150 + 100 * cos(radians(AnimeTitle * 2)),
+        map(constrain(AnimeTitle, 0, 600), 0, 600, 0, 255));
       strokeWeight(2);
       noFill();
       ellipseMode(RADIUS);
@@ -146,7 +223,8 @@ void draw() {
         if(n == 1) stroke(100, 100, 255);
         arc(width * 0.6f + 12 * cos(radians(AnimeTitle)) + 6 * cos(radians(AnimeTitle * 4)),
           map(constrain(AnimeTitle, 0, 120), 0, 120, height * 1.0f, height * 0.5f) + 4 * cos(radians(AnimeTitle * 5)),
-          height * map(constrain(AnimeTitle, 0, 60), 0, 60, .0f, .2f) + n, height * map(constrain(AnimeTitle, 0, 60) + n, 0, 60, .0f, .2f), 0, TAU);
+          height * map(constrain(AnimeTitle, 0, 60), 0, 60, .0f, .2f) + n,
+          height * map(constrain(AnimeTitle, 0, 60) + n, 0, 60, .0f, .2f), 0, TAU);
       }
       noStroke();
       fill(0, 60, 200, map(constrain(AnimeTitle, 0, 60), 0, 60, 0, 255));
@@ -172,8 +250,6 @@ void draw() {
       break;
     case 1:
       //セレクト
-      fill(128);
-      
       int selectNumber = constrain(selectSea, 0, seaColor.length - 1);
       color primeColor = color(red(seaColor[selectNumber]) + red(seaWideColor[selectNumber]) * cos(radians(frameCount)),
         green(seaColor[selectNumber]) + green(seaWideColor[selectNumber]) * cos(radians(frameCount)),
@@ -182,8 +258,18 @@ void draw() {
         green(seaColor[selectNumber]) + green(seaWideColor[selectNumber]) * -cos(radians(frameCount)),
         blue(seaColor[selectNumber]) + blue(seaWideColor[selectNumber]) * -cos(radians(frameCount)));
       
-      arcText( "<", width * .1f, height * .6f, 48, primeColor);
-      arcText( ">", width * .9f, height * .6f, 48, primeColor);
+      fill(255);
+      textSize(48);
+      textAlign(CENTER, CENTER);
+      button(width * .1f, height * .6f, 24f, primeColor, secondColor);
+      text("<", width * .1f - 2f, height * .6f - 8f);
+      button(width * .9f, height * .6f, 24f, primeColor, secondColor);
+      text(">", width * .9f + 2f, height * .6f - 8f);
+      if(button(width * .9f, height * .1f, 24f, primeColor, secondColor)) 
+        boxText("Edit Mode", width * .83f, height * .20f, 12, 0, secondColor);
+      noStroke();
+      fill(255);
+      note( width * .9f, height * .1f, 12f, 0f );
       capsule( "Sum of Stage : " + stage.size(), width * 0.8, height * 0.95, 12, primeColor );
         
       boolean overMouse;
@@ -372,6 +458,60 @@ void draw() {
       LeftMenu();
       RightMenu();
       break;
+    case 3:
+      Edit.setColor(LowColor, HighColor);
+      Board.setColor(LowColor, HighColor);
+      
+      if(whichColor) HighColor = color(RedBar, GreenBar, BlueBar);
+      else LowColor = color(RedBar, GreenBar, BlueBar);
+      
+      if(button(width * .05f, height * .25f, 12f, LowColor, LowColor) || !whichColor) 
+        boxText("Lower Color", width * .09f, height * .25f - 6f, 12, 0, LowColor);
+      
+      if(button(width * .05f, height * .35f, 12f, HighColor, HighColor) || whichColor) 
+        boxText("Higher Color", width * .09f, height * .35f - 6f, 12, 0, HighColor);
+      
+      Edit.Draw(-1, 0);
+      Board.Draw(-1, 0);
+      
+      if(button(width * .9f, height * .9f, 24f, color(0), color(100))) 
+        boxText("Home", width * .7f, height * .9f, 12, 0, color(100));
+      noStroke();
+      fill(255);
+      home( width * .9f, height * .9f, 12f, 0f );
+      
+      if(button(width * .9f, height * .7f, 24f, color(0), color(100))) 
+        boxText("Test Play", width * .7f, height * .7f, 12, 0, color(100));
+      noStroke();
+      fill(255);
+      note( width * .9f, height * .7f, 12f, 0f );
+      
+      
+      break;
+  }
+  if(mode == 3) {
+    cp5.getController("RedBar").show();
+    cp5.getController("RedBar")
+      .setColor(new CColor(color(RedBar, 0, 0), color(200),
+      color(RedBar, 0, 0), color(0), color(255)));
+    
+    cp5.getController("GreenBar").show();
+    cp5.getController("GreenBar")
+      .setColor(new CColor(color(0, GreenBar, 0), color(200),
+      color(0, GreenBar, 0), color(0), color(255)));
+    
+    cp5.getController("BlueBar").show();
+    cp5.getController("BlueBar")
+      .setColor(new CColor(color(0, 0, BlueBar), color(200),
+      color(0, 0, BlueBar), color(0), color(255)));
+    cp5.getController("Title").show();
+    
+    
+  } else {
+    cp5.getController("RedBar").hide();
+    cp5.getController("GreenBar").hide();
+    cp5.getController("BlueBar").hide();
+    cp5.getController("Title").hide();
     
   }
 }
@@ -404,6 +544,9 @@ void mousePressed() {
         seaSlide = width;
         snd[9].play();
         snd[9].cue(100);
+      }
+      if(dist(mouseX, mouseY, width * .9f, height * .1f) < 24f) {
+        mode = 3;
       }
       
       for(int n = 0; n < 8; n++) {
@@ -493,6 +636,66 @@ void mousePressed() {
         }
       }
       break;
+    case 3:
+      boolean isChanged = false;
+      if(distMouse(width * .9f, height * .9f, 24f)) {
+        mode = 1;
+        isChanged = true;
+      }
+      
+      if(distMouse(width * .05f, height * .25f, 12f)) {
+        whichColor = false;
+        cp5.getController("RedBar").setValue(int(red(LowColor)));
+        cp5.getController("GreenBar").setValue(int(green(LowColor)));
+        cp5.getController("BlueBar").setValue(int(blue(LowColor)));
+        isChanged = true;
+      }
+      if(distMouse(width * .05f, height * .35f, 12f)) {
+        whichColor = true;
+        cp5.getController("RedBar").setValue(int(red(HighColor)));
+        cp5.getController("GreenBar").setValue(int(green(HighColor)));
+        cp5.getController("BlueBar").setValue(int(blue(HighColor)));
+        isChanged = true;
+      }
+      
+      for(int n = 0; n < 9; n++) {
+        if(Board.inRange(n)) {
+          BubbleNumber = n + 1;
+          isChanged = true;
+        }
+      }
+      
+      if(Board.inRange(10)) { BubbleMode = 2; isChanged = true; }
+      if(Board.inRange(11)) { BubbleMode = 1; isChanged = true; }
+      if(Board.inRange(12)) { BubbleMode = 0; isChanged = true; }
+      
+      for(int n = 0; n < 10; n++) {
+        ((Number) Board.List.get(n)).isTurn = (BubbleMode == 1);
+        ((Number) Board.List.get(n)).isLocked = (BubbleMode == 2);
+        
+      }
+      ((Number) Board.List.get(9)).num = max(1, BubbleNumber);
+      
+      if(0 <= mouseX && 150 >= mouseX && 0 <= mouseY && mouseY <= 50) isChanged = true;
+      if(cp5.getController("RedBar").isMouseOver()) isChanged = true;
+      if(cp5.getController("GreenBar").isMouseOver()) isChanged = true;
+      if(cp5.getController("BlueBar").isMouseOver()) isChanged = true;
+      
+      for(int n = Edit.List.size() - 1; n >= 0; n--) {
+        Number Buf = (Number) Edit.List.get(n);
+        if(Buf.x == ceil((mouseX - Edit.x - Edit.r / 2f) / Edit.r) &&
+          Buf.y == ceil((mouseY - Edit.y - Edit.r / 2f) / Edit.r)) {
+            isChanged = true;
+            Edit.List.remove(n);
+        }
+      }
+      
+      if(!isChanged) {
+        
+        Edit.List.add(new Number(BubbleNumber, ceil((mouseX - Edit.x - Edit.r / 2f) / Edit.r), ceil((mouseY - Edit.y - Edit.r / 2f) / Edit.r),
+          (BubbleMode == 1), (BubbleMode == 2)));
+      }
+      
   }
 }
 
