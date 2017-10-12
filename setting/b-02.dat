@@ -1,0 +1,9 @@
+[comment]
+Becareful for new feature.
+[color]
+180, 10, 40, 90, 50, 20
+[number]
+3, 0, 1, true, false
+6, 1, 0, true, false
+4, 2, 1, true, false
+8, 1, 2, true, false
