@@ -1,0 +1,9 @@
+[comment]
+New Bubble can't move!
+[color]
+0, 180, 180, 0, 128, 0
+[number]
+1, 0, 0, 0, 0
+2, 2, 0, 0, 0
+3, 0, 2, 0, true
+4, 2, 2, 0, true

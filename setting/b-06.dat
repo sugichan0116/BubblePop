@@ -1,0 +1,9 @@
+[comment]
+Four x 3 = simple?
+[color]
+80, 180, 60, 80, 180, 150
+[number]
+3, 0, 0, true, false
+3, 1, 1, false, false
+3, 2, 0, false, false
+3, 3, 0, true, false
