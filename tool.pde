@@ -41,8 +41,10 @@ void LeftMenu() {
             height - menuRadius * (float(n) + 0.5f), menuRadius * 0.15f, radians(180));
           break;
         case 3:
+          if(isEdit) break;
           lamp(map(constrain(AnimeMenuLeft - space.AnimeTime / 4f * n, 0, space.AnimeTime / 4f), 0, space.AnimeTime / 4f, - menuRadius / 2f, menuRadius / 2f),
             height - menuRadius * (float(n) + 0.5f), menuRadius * 0.15f, radians(0));
+          break;
       }
       
       
@@ -104,6 +106,7 @@ void RightMenu() {
       fill(255);
       switch(n) {
         case 0:
+          if(isEdit) break;
           polygon(3, width - map(constrain(AnimeMenuRight - space.AnimeTime / 3f * n, 0, space.AnimeTime / 3f), 0, space.AnimeTime / 3f, - menuRadius / 2f, menuRadius / 2f),
             height - menuRadius * (float(n) + 0.5f), menuRadius * 0.15f, radians(180));
           break;
@@ -113,6 +116,7 @@ void RightMenu() {
             height - menuRadius * (float(n) + 0.5f), menuRadius * 0.15f, radians(0));
           break;
         case 2:
+          if(isEdit) break;
           polygon(3, width - map(constrain(AnimeMenuRight - space.AnimeTime / 3f * n, 0, space.AnimeTime / 3f), 0, space.AnimeTime / 3f, - menuRadius / 2f, menuRadius / 2f),
             height - menuRadius * (float(n) + 0.5f), menuRadius * 0.15f, radians(0));
           break;

@@ -1,6 +1,10 @@
 import controlP5.*;
 ControlP5 cp5;
 
+import java.io.FileWriter;
+import java.io.BufferedWriter;
+import java.io.IOException;
+
 import ddf.minim.*;
 import ddf.minim.analysis.*;
 import ddf.minim.effects.*;
@@ -56,28 +60,31 @@ color LowColor, HighColor;
 boolean whichColor = false;
 int RedBar, GreenBar, BlueBar;
 int BubbleMode = 0;
-int BubbleNumber = 0;
+int BubbleNumber = 1;
 String Title = "";
 Space Board;
+boolean isEdit = false;
+boolean isTest = false;
 
 void setup() {
   size(480, 320);
   
   //音声読み込み
+  String soundPath = "data/sound/";
   minim = new Minim(this);
   snd = new AudioPlayer[16];
-  snd[0] = minim.loadFile("sound/swipe.mp3");
-  snd[1] = minim.loadFile("sound/clear.mp3");
-  snd[2] = minim.loadFile("sound/failed.mp3");
-  snd[3] = minim.loadFile("sound/marge.mp3");
-  snd[4] = minim.loadFile("sound/pop.mp3");
-  snd[5] = minim.loadFile("sound/select.mp3");  snd[5].setGain(-5);
-  snd[6] = minim.loadFile("sound/menu.mp3");
-  snd[7] = minim.loadFile("sound/menupress.mp3");
-  snd[8] = minim.loadFile("sound/seaselect.mp3");  snd[8].setGain(-10);
-  snd[9] = minim.loadFile("sound/seaswitch.mp3");
-  snd[10] = minim.loadFile("sound/title.mp3"); snd[10].cue(200);
-  snd[11] = minim.loadFile("sound/stageselect.mp3");
+  snd[0] = minim.loadFile(soundPath + "swipe.mp3");
+  snd[1] = minim.loadFile(soundPath + "clear.mp3");
+  snd[2] = minim.loadFile(soundPath + "failed.mp3");
+  snd[3] = minim.loadFile(soundPath + "marge.mp3");
+  snd[4] = minim.loadFile(soundPath + "pop.mp3");
+  snd[5] = minim.loadFile(soundPath + "select.mp3");  snd[5].setGain(-5);
+  snd[6] = minim.loadFile(soundPath + "menu.mp3");
+  snd[7] = minim.loadFile(soundPath + "menupress.mp3");
+  snd[8] = minim.loadFile(soundPath + "seaselect.mp3");  snd[8].setGain(-10);
+  snd[9] = minim.loadFile(soundPath + "seaswitch.mp3");
+  snd[10] = minim.loadFile(soundPath + "title.mp3"); snd[10].cue(200);
+  snd[11] = minim.loadFile(soundPath + "stageselect.mp3");
   
   //GUI読み込み
   cp5 = new ControlP5(this);
@@ -124,7 +131,8 @@ void setup() {
   
   cp5.addTextfield("Title")
     .setLabelVisible(false)
-    .setText("No Title")
+    .setLabel("")
+    .setText("")
     .setPosition(width * .4f - 10, 10)
     .setSize( int(width * .6f), 24)
     .setFont(createFont("BookAntiqua", 18))
@@ -136,7 +144,7 @@ void setup() {
   Edit = new Space(0f, 0f, 32f, color(0), color(0));
   Board = new Space(10 + width * .82 / 9f * 0.4f, height * .9f, width * .82f / 9f, color(0), color(0));
   for(int n = 1; n < 10; n++) Board.List.add( new Number(n, n - 1, 0, false, false));
-  Board.List.add(new Number(1, 9, -5, false, false));
+  Board.List.add(new Number(1, 9, -4, false, false));
   Board.List.add(new Number(1, 0, -1, false, true));
   Board.List.add(new Number(1, 0, -2, true, false));
   Board.List.add(new Number(1, 0, -3, false, false));
@@ -149,12 +157,12 @@ void setup() {
   currentHistory = 0;
   isValidHistory = false;
   
-  fileOver = loadStrings("setting/data.dat");
+  fileOver = loadStrings("data/setting/data.dat");
   
   for(int fileNum = 0; fileNum < fileOver.length; fileNum++){
     //１ファイル読み込み
     if(fileOver[fileNum].equals("")) continue;
-    reader = loadStrings("setting/" + fileOver[fileNum]);
+    reader = loadStrings("data/setting/" + fileOver[fileNum]);
     String lineString;
     Space fileSpace = new Space();
     int lineNum = 0;
@@ -274,7 +282,7 @@ void draw() {
         
       boolean overMouse;
       overMouse = false;
-      for(int k = 0; k <= ceil(stage.size() / 8); k++) {
+      for(int k = 0; k <= ceil((stage.size() - 1) / 8); k++) {
         
         selectNumber = constrain(k, 0, seaColor.length - 1);
         primeColor = color(red(seaColor[selectNumber]) + red(seaWideColor[selectNumber]) * cos(radians(frameCount)),
@@ -371,7 +379,7 @@ void draw() {
       }
       if(AnimeSlide == 0) selected = -1;
       
-      boxText(nf(playStage + 1, 2) + " : " + space.comment, 8f, 8f, 24, width - 16, space.Color[0]);
+      boxText(((isEdit) ? "TestPlay" : nf(playStage + 1, 2)) + " : " + space.comment, 8f, 8f, 24, width - 16, space.Color[0]);
       
       
       if(HintTime > 0) {
@@ -439,11 +447,17 @@ void draw() {
         popStyle();
         
         if(AnimeClear > frameRate * 4) {
-          if(space.isClear()) playStage++;
-          playStage %= stage.size();
-          space.Copy((Space) stage.get(playStage));
           isValidHistory = false;
           AnimeClear = 0;
+          if(isEdit) {
+            mode = 3;
+            isTest = true;
+            //hint生成
+          } else {
+            if(space.isClear()) playStage++;
+            playStage %= stage.size();
+            space.Copy((Space) stage.get(playStage));
+          }
         }
       }
       
@@ -461,6 +475,12 @@ void draw() {
     case 3:
       Edit.setColor(LowColor, HighColor);
       Board.setColor(LowColor, HighColor);
+      Edit.setComment(Title);
+      
+      fill(0);
+      textSize(18);
+      textAlign(RIGHT, TOP);
+      text(((Title == "") ? "No Title (Input Name & Press Enter)" : "[ " + Title + " ]"), width - 10, 40);
       
       if(whichColor) HighColor = color(RedBar, GreenBar, BlueBar);
       else LowColor = color(RedBar, GreenBar, BlueBar);
@@ -480,12 +500,19 @@ void draw() {
       fill(255);
       home( width * .9f, height * .9f, 12f, 0f );
       
-      if(button(width * .9f, height * .7f, 24f, color(0), color(100))) 
-        boxText("Test Play", width * .7f, height * .7f, 12, 0, color(100));
+      if(button(width * .9f, height * .73f, 24f, color(0), color(100))) 
+        boxText("Test Play", width * .7f, height * .73f, 12, 0, color(100));
       noStroke();
       fill(255);
-      note( width * .9f, height * .7f, 12f, 0f );
+      note( width * .9f, height * .73f, 12f, 0f );
       
+      if(button(width * .9f, height * .56f, 24f, color(0), color(100))) 
+        boxText("Save", width * .7f, height * .56f, 12, 0, color(100));
+      noStroke();
+      fill(255);
+      cardBoard( width * .9f, height * .56f - 2f, 12f + 2f, 0f );
+            
+      capsule("Current Bubble", width * .8f, height * .25f, 12, Edit.Color[BubbleNumber%10]);
       
       break;
   }
@@ -539,8 +566,8 @@ void mousePressed() {
         snd[9].cue(100);
         
       }
-      if(dist(mouseX, mouseY, width * .9f, height * .6f) < 24f && selectSea != floor(stage.size() / 8)) {
-        selectSea = constrain(selectSea + 1, 0, floor(stage.size() / 8));
+      if(dist(mouseX, mouseY, width * .9f, height * .6f) < 24f && selectSea != ceil((stage.size() - 1) / 8)) {
+        selectSea = constrain(selectSea + 1, 0, ceil((stage.size() - 1) / 8));
         seaSlide = width;
         snd[9].play();
         snd[9].cue(100);
@@ -580,18 +607,18 @@ void mousePressed() {
             switch(n) {
               case 0:
                 if(History.size() != 0) {
-                  //if(currentHistory == History.size()) {
-                  //  Space Buf = new Space();
-                  //  Buf.Copy(space);
-                  //  History.add((Space) Buf);
-                  //  currentHistory++;
-                  //}
+                  
                   currentHistory = constrain(currentHistory - 1, 1, History.size());
                   space.Copy((Space) History.get(currentHistory - 1));
                 }
                 break;
               case 1:
-                space.Copy((Space) stage.get(playStage));
+                if(isEdit) {
+                  space.Copy(Edit);
+                  space.optimis();
+                } else {
+                  space.Copy((Space) stage.get(playStage));
+                }
                 isValidHistory = false;
                 break;
               case 2:
@@ -601,8 +628,10 @@ void mousePressed() {
                 }
                 break;
               case 3:
+                if(isEdit) break;
                 HintTime = 30 * ( space.Hint.size() + 1);
                 HintID++;
+                break;
             }
           }
         }
@@ -616,6 +645,7 @@ void mousePressed() {
             //ボタンの機能実装部
             switch(n) {
               case 0:
+                if(isEdit) break;
                 playStage = playStage + stage.size() - 1;
                 playStage %= stage.size();
                 space.Copy((Space) stage.get(playStage));
@@ -623,9 +653,11 @@ void mousePressed() {
                 break;
               case 1:
                 mode = 1;
+                if(isEdit) mode = 3;
                 isValidHistory = false;
                 break;
               case 2:
+                if(isEdit) break;
                 playStage++;
                 playStage %= stage.size();
                 space.Copy((Space) stage.get(playStage));
@@ -640,6 +672,55 @@ void mousePressed() {
       boolean isChanged = false;
       if(distMouse(width * .9f, height * .9f, 24f)) {
         mode = 1;
+        isChanged = true;
+      }
+      
+      if(distMouse(width * .9f, height * .73f, 24f)) {
+        mode = 2;
+        isEdit = true;
+        space.Copy(Edit);
+        space.optimis();
+        isChanged = true;
+      }
+      
+      if(distMouse(width * .9f, height * .56f, 24f)) {
+        //保存処理
+        if(isTest && !Edit.comment.equals("")) {
+          Edit.optimis();
+          //統括ファイルに追加
+          try {
+            BufferedWriter file = new BufferedWriter(new FileWriter(dataPath("") + "//setting/data.dat", true));
+            file.write(Edit.comment + ".dat");
+            file.newLine();
+            file.close();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+          //ステージファイル作成＆保存
+          try {
+            BufferedWriter file = new BufferedWriter(new FileWriter(dataPath("") + "//setting/" + Edit.comment + ".dat"));
+            
+            file.write("[comment]"); file.newLine();
+            file.write(Edit.comment); file.newLine();
+            file.write("[color]"); file.newLine();
+            file.write(int(red(Edit.Color[0])) + ", " + int(green(Edit.Color[0])) + ", " +
+              int(blue(Edit.Color[0])) + ", " + int(red(Edit.Color[9])) + ", " + 
+              int(green(Edit.Color[9])) + ", " + int(blue(Edit.Color[9]))); file.newLine();
+            file.write("[number]"); file.newLine();
+            for(int n = 0; n < Edit.List.size(); n++) {
+              file.write(((Number)Edit.List.get(n)).num + ", " + 
+                ((Number)Edit.List.get(n)).x + ", " + 
+                ((Number)Edit.List.get(n)).y + ", " + 
+                ((Number)Edit.List.get(n)).isTurn + ", " + 
+                ((Number)Edit.List.get(n)).isLocked); file.newLine();
+            }
+            
+            file.close();
+          } catch(IOException e) {
+            e.printStackTrace();
+          }
+          
+        }
         isChanged = true;
       }
       
@@ -688,6 +769,11 @@ void mousePressed() {
             isChanged = true;
             Edit.List.remove(n);
         }
+      }
+      
+      if(cp5.getController("Title").isMouseOver()) {
+        
+        isChanged = true;
       }
       
       if(!isChanged) {

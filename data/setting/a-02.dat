@@ -1,0 +1,9 @@
+[comment]
+Move 2 to the lower right!
+[color]
+0, 180, 0, 30, 60, 0
+[number]
+2, 0, 0, 0, 0
+5, 1, 1, 0, 0
+[hint]
+0, 0, 1

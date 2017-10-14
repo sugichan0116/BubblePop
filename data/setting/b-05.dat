@@ -1,0 +1,10 @@
+[comment]
+Beautiful Answer.
+[color]
+230, 50, 50, 220, 130, 200
+[number]
+2, 1, 1, false, false
+4, 2, 1, false, false
+6, 1, 0, false, false
+8, 0, 1, false, false
+2, 0, 2, true, false

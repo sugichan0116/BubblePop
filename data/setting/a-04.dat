@@ -1,0 +1,11 @@
+[comment]
+Try all possibility!
+[color]
+180, 30, 180, 60, 0, 60
+[number]
+3, 0, 1, false, false
+4, 1, 0, false, false
+2, 2, 1, false, false
+[hint]
+0, 1, 0
+2, 1, 5
