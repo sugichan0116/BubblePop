@@ -89,47 +89,20 @@ class Space {
       moveX = moveY = 0;
       
       if(selectID == n) {
-        AnimeMove += 4;
+        AnimeMove += 4f * RateY;
         
-        switch(MoveDirection) {
-          
-          case 0:
-            moveX = AnimeMove;
-            moveY = 0;
-            break;
-          case 1:
-            moveX = AnimeMove;
-            moveY = AnimeMove;
-            break;
-          case 2:
-            moveX = 0;
-            moveY = AnimeMove;
-            break;
-          case 3:
-            moveX = -AnimeMove;
-            moveY = AnimeMove;
-            break;
-          case 4:
-            moveX = -AnimeMove;
-            moveY = 0;
-            break;
-          case 5:
-            moveX = -AnimeMove;
-            moveY = -AnimeMove;
-            break;
-          case 6:
-            moveX = 0;
-            moveY = -AnimeMove;
-            break;
-          case 7:
-            moveX = AnimeMove;
-            moveY = -AnimeMove;
-            break;
+        if(AnimeMove >= r) {
+          AnimeMove = 0;
+          ((Number) List.get(selectID)).x += directionX(MoveDirection);
+          ((Number) List.get(selectID)).y += directionY(MoveDirection);
           
         }
+        moveX = directionX(MoveDirection) * AnimeMove;
+        moveY = directionY(MoveDirection) * AnimeMove;
+        
         for(int i = 0; i < List.size(); i++) {
           if(i != n) {
-            if(dist(moveX + ListX(n), moveY + ListY(n), ListX(i), ListY(i)) < 1f) {
+            if(dist(moveX + ListX(n), moveY + ListY(n), ListX(i), ListY(i)) < 1f  * RateY) {
               Number Target = (Number) List.get(i);
               
               Buf.num = ((MoveDirection % 2 == 0) ^ Buf.isTurn) ? (Buf.num + Target.num) : (Buf.num * Target.num);
@@ -157,7 +130,6 @@ class Space {
         }
       }
       Buf.Draw(x + moveX, y + moveY, r * radiusRate, r, Color[Buf.num % 10], AnimeTime);
-      
       //if(Buf.num == 0) List.remove(n);
     }
     for(int n = List.size() - 1; n >= 0; n--) {
@@ -217,6 +189,32 @@ class Space {
     Number Buf;
     Buf = (Number) List.get(id);
     return Buf.Anime;
+  }
+  int directionX(int directID) {
+    switch (directID) {
+      case 0:
+      case 1:
+      case 7:
+        return 1;
+      case 3:
+      case 4:
+      case 5:
+        return -1;
+    }
+    return 0;
+  }
+  int directionY(int directID) {
+    switch (directID) {
+      case 1:
+      case 2:
+      case 3:
+        return 1;
+      case 5:
+      case 6:
+      case 7:
+        return -1;
+    }
+    return 0;
   }
   boolean direction(int directID, int id) {
     if(id < 0 || List.size() <= id) return false;
@@ -308,12 +306,12 @@ class Space {
     
     x = width * .5f;
     y = height * .55f;
-    r = 64f;
-    if(64f * (rightX - leftX) > width * 0.8f ) {
+    r = 64f * RateY;
+    if(64f * RateY * (rightX - leftX) > width * 0.8f ) {
       r = min( r, width * 0.8f / (rightX - leftX) );
     }
     
-    if(64f * (bottomY - topY) > height * 0.6f ) {
+    if(64f * RateY * (bottomY - topY) > height * 0.6f ) {
       r = min( r, height * 0.6f / (bottomY - topY) );
     }
     

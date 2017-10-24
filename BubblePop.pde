@@ -1,16 +1,14 @@
 import controlP5.*;
 ControlP5 cp5;
 
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
 
 import ddf.minim.*;
-import ddf.minim.analysis.*;
-import ddf.minim.effects.*;
-import ddf.minim.signals.*;
-import ddf.minim.spi.*;
-import ddf.minim.ugens.*;
 
 Minim minim;
 AudioPlayer snd[];
@@ -63,14 +61,33 @@ int BubbleMode = 0;
 int BubbleNumber = 1;
 String Title = "";
 Space Board;
+Space Select;
 boolean isEdit = false;
 boolean isTest = false;
 
+float RateX, RateY;
+int screenPreWidth = 0, screenPreHeight = 0;
+
 void setup() {
-  size(480, 320);
+  //size(480, 320);
+  size(960, 640);
+  //fullScreen(P2D, 2);
+  RateX = float(width) / 480f;
+  RateY = float(height) / 320f;
+  
+  
+  frame.setResizable(true);
+  frame.addComponentListener(new ComponentAdapter() {
+    public void componentResized(ComponentEvent e) {
+      if (e.getSource()==frame) {
+        redraw();
+      }
+    }
+  }
+  );
   
   //音声読み込み
-  String soundPath = "data/sound/";
+  String soundPath = dataPath("") + "//sound/";
   minim = new Minim(this);
   snd = new AudioPlayer[16];
   snd[0] = minim.loadFile(soundPath + "swipe.mp3");
@@ -142,9 +159,10 @@ void setup() {
     ;
   
   Edit = new Space(0f, 0f, 32f, color(0), color(0));
-  Board = new Space(10 + width * .82 / 9f * 0.4f, height * .9f, width * .82f / 9f, color(0), color(0));
+  Board = new Space(width * 0.02f + width * .82 / 9f * 0.4f, height * .9f, width * .82f / 9f, color(0), color(0));
   for(int n = 1; n < 10; n++) Board.List.add( new Number(n, n - 1, 0, false, false));
-  Board.List.add(new Number(1, 9, -4, false, false));
+  Select = new Space(width - 32 * RateX, 60 * RateY, width * .82f / 9f, color(0), color(0));
+  Select.List.add(new Number(1, 0, 0, false, false));
   Board.List.add(new Number(1, 0, -1, false, true));
   Board.List.add(new Number(1, 0, -2, true, false));
   Board.List.add(new Number(1, 0, -3, false, false));
@@ -157,12 +175,12 @@ void setup() {
   currentHistory = 0;
   isValidHistory = false;
   
-  fileOver = loadStrings("data/setting/data.dat");
+  fileOver = loadStrings(dataPath("") + "//setting/data.dat");
   
   for(int fileNum = 0; fileNum < fileOver.length; fileNum++){
     //１ファイル読み込み
     if(fileOver[fileNum].equals("")) continue;
-    reader = loadStrings("data/setting/" + fileOver[fileNum]);
+    reader = loadStrings(dataPath("") + "//setting/" + fileOver[fileNum]);
     String lineString;
     Space fileSpace = new Space();
     int lineNum = 0;
@@ -213,15 +231,44 @@ void setup() {
   
 }
 
+boolean isChangedScreen() {
+  boolean isChanged = ((screenPreWidth != width) || (screenPreHeight != height));
+  screenPreWidth = width; screenPreHeight  = height;
+  return isChanged;
+}
+
 void draw() {
+  if(isChangedScreen()) {
+    RateX = float(width) / 480f;
+    RateY = float(height) / 320f;
+    menuRadius = 64f * RateY;
+    space.optimis();
+    for(Object Buf :stage) {
+      ((Space) Buf).optimis();
+    }
+    Edit.optimis();
+    cp5.getController("RedBar").setSize(int(128 * RateX), int(10 * RateY));
+    cp5.getController("RedBar").setPosition(int(10 * RateX), int(10 * RateY));
+    cp5.getController("GreenBar").setSize(int(128 * RateX), int(10 * RateY));
+    cp5.getController("GreenBar").setPosition(int(10 * RateX), int(25 * RateY));
+    cp5.getController("BlueBar").setSize(int(128 * RateX), int(10 * RateY));
+    cp5.getController("BlueBar").setPosition(int(10 * RateX), int(40 * RateY));
+    cp5.getController("Title").setSize(int(width * .6f), int(24 * RateY));
+    cp5.getController("Title").setPosition(int(width * .4f - 10 * RateX), int(10 * RateY));
+    cp5.getController("Title").setFont(createFont("BookAntiqua", 18 * RateY));
+    Board.x = width * 0.02f + width * .82 / 9f * 0.4f;
+    Board.y = height * .9f;
+    Board.r = min(width * .82f / 9f, height * .5f / 4f);
+    Select.x = width - 32 * RateX;
+    Select.y = 120 * RateY;
+    Select.r = min(width * .82f / 9f, height * .5f / 4f);
+  }
+  
   background(255);
   switch(mode) {
     case 0:
       //タイトル
-      for(int n = 0; n < height; n++) {
-        stroke(0, 180, 255 - n, 70 + 10 * sin(radians(AnimeTitle * 2)));
-        line(0, n, width, n);
-      }
+      
       stroke(0, 60 + 30 * cos(radians(AnimeTitle)), 150 + 100 * cos(radians(AnimeTitle * 2)),
         map(constrain(AnimeTitle, 0, 600), 0, 600, 0, 255));
       strokeWeight(2);
@@ -236,14 +283,14 @@ void draw() {
       }
       noStroke();
       fill(0, 60, 200, map(constrain(AnimeTitle, 0, 60), 0, 60, 0, 255));
-      textSize(48);
+      textSize(48 * RateX);
       textAlign(CENTER, CENTER);
       text("Bubble", width * 0.4f, height * 0.4f);
-      textSize(60);
+      textSize(60 * RateX);
       fill(0, 120, 250, map(constrain(AnimeTitle, 0, 60), 0, 60, 0, 255));
       text("Pop", width * 0.5f, height * 0.5f);
       fill(255);
-      textSize(16);
+      textSize(16 * RateX);
       text(">> Click to Start <<", width * .5f, height * .8f);
       AnimeTitle++;
       if(titleShift > 0) {
@@ -267,18 +314,18 @@ void draw() {
         blue(seaColor[selectNumber]) + blue(seaWideColor[selectNumber]) * -cos(radians(frameCount)));
       
       fill(255);
-      textSize(48);
+      textSize(48 * RateY);
       textAlign(CENTER, CENTER);
-      button(width * .1f, height * .6f, 24f, primeColor, secondColor);
-      text("<", width * .1f - 2f, height * .6f - 8f);
-      button(width * .9f, height * .6f, 24f, primeColor, secondColor);
-      text(">", width * .9f + 2f, height * .6f - 8f);
-      if(button(width * .9f, height * .1f, 24f, primeColor, secondColor)) 
-        boxText("Edit Mode", width * .83f, height * .20f, 12, 0, secondColor);
+      button(width * .1f, height * .6f, 24f * RateY, primeColor, secondColor);
+      text("<", width * .1f - 2f * RateY, height * .6f - 8f * RateY);
+      button(width * .9f, height * .6f, 24f * RateY, primeColor, secondColor);
+      text(">", width * .9f + 2f * RateY, height * .6f - 8f * RateY);
+      if(button(width * .9f, height * .1f, 24f * RateY, primeColor, secondColor)) 
+        boxText("Edit Mode", width * .83f, height * .20f, int(12 * RateY), 0, secondColor);
       noStroke();
       fill(255);
-      note( width * .9f, height * .1f, 12f, 0f );
-      capsule( "Sum of Stage : " + stage.size(), width * 0.8, height * 0.95, 12, primeColor );
+      note( width * .9f, height * .1f, 12f * RateY, 0f );
+      capsule( "Sum of Stage : " + stage.size(), width * 0.8, height * 0.95, int(12 * RateY), primeColor );
         
       boolean overMouse;
       overMouse = false;
@@ -292,34 +339,34 @@ void draw() {
           green(seaColor[selectNumber]) + green(seaWideColor[selectNumber]) * -cos(radians(frameCount)),
           blue(seaColor[selectNumber]) + blue(seaWideColor[selectNumber]) * -cos(radians(frameCount)));
         
-        capsule( seas[selectNumber], width * ( .5f + -selectSea + k) + seaSlide, height * .1f, 48, primeColor);
-        capsule( seasDescription[selectNumber], width * ( .5f + -selectSea + k) + seaSlide, height * .22f, 12, primeColor);
+        capsule( seas[selectNumber], width * ( .5f + -selectSea + k) + seaSlide, height * .1f, int(48 * RateY), primeColor);
+        capsule( seasDescription[selectNumber], width * ( .5f + -selectSea + k) + seaSlide, height * .22f, int(12 * RateY), primeColor);
         
         
         for(int n = 0; n < 8; n++) {
           if(k * 8 + n >= stage.size()) break;
           fill(secondColor);
-          strokeWeight(1);
+          strokeWeight(1 * RateY);
           stroke(secondColor);
           ellipseMode(RADIUS);
           textAlign(CENTER, CENTER);
-          if(dist(mouseX, mouseY, width * arrayX[n], height * arrayY[n]) < 24f && k == selectSea) {
+          if(dist(mouseX, mouseY, width * arrayX[n], height * arrayY[n]) < 24f * RateY && k == selectSea) {
             
-            textSize(map(AnimeTitle, 0, 10, 18, 36));
+            textSize(map(AnimeTitle, 0, 10, 18, 36) * RateY);
             arc(width * ( arrayX[n] + float(-selectSea + k) ) + seaSlide, height * arrayY[n],
-              map(AnimeTitle, 0, 10, 12f, 24f), map(AnimeTitle, 0, 10, 12f, 24f), 0f, TAU);
+              map(AnimeTitle, 0, 10, 12f, 24f) * RateY, map(AnimeTitle, 0, 10, 12f, 24f) * RateY, 0f, TAU);
             noFill();
-            arc(width * ( arrayX[n] + float(-selectSea + k) ) + seaSlide, height * arrayY[n], 24f + 4f, 24f + 4f, 0f, TAU);
+            arc(width * ( arrayX[n] + float(-selectSea + k) ) + seaSlide, height * arrayY[n], 24f * RateY + 4f, 24f * RateY + 4f, 0f, TAU);
             
-            capsule(((Space)stage.get(n + k * 8)).comment, width * ( arrayX[n] - .5f) / 2f + width / 2f, height * arrayY[n] - 36,
-              int(map(AnimeTitle, 0, 10, 1, 18)), secondColor);
+            capsule(((Space)stage.get(n + k * 8)).comment, width * ( arrayX[n] - .5f) / 2f + width / 2f, height * arrayY[n] - 36 * RateY,
+              int(map(AnimeTitle, 0, 10, 1, 18) * RateY), secondColor);
             overMouse = true;
           } else {
             
-            textSize(18);
-            arc(width * ( arrayX[n] + float(-selectSea + k) ) + seaSlide, height * arrayY[n], 12f, 12f, 0f, TAU);
+            textSize(18 * RateY);
+            arc(width * ( arrayX[n] + float(-selectSea + k) ) + seaSlide, height * arrayY[n], 12f * RateY, 12f * RateY, 0f, TAU);
             noFill();
-            arc(width * ( arrayX[n] + float(-selectSea + k) ) + seaSlide, height * arrayY[n], 12f + 2f, 12f + 2f, 0f, TAU);
+            arc(width * ( arrayX[n] + float(-selectSea + k) ) + seaSlide, height * arrayY[n], 12f * RateY + 2f, 12f * RateY + 2f, 0f, TAU);
             
           }
           fill(255);
@@ -362,14 +409,14 @@ void draw() {
       if(AnimeSlide > 0) { //selected >= 0) {
         for(int n = 0; n < 4; n++) {
           arcText(((space.ListIsLocked(selected)) ? "" : ((space.ListIsTurn(selected)) ? "x" : "+")),
-            space.ListX(selected) + map(AnimeSlide, 0, space.AnimeTime, 0f, 1.f) * 38f * cos(HALF_PI * n),
-            space.ListY(selected) + map(AnimeSlide, 0, space.AnimeTime, 0f, 1.f) * 38f * sin(HALF_PI * n),
-            16f * ((direction(dragX, dragY) == n * 2 && dist(mouseX, mouseY, dragX, dragY) >= space.r * space.radiusRate) ? 2f : 1f),
+            space.ListX(selected) + map(AnimeSlide, 0, space.AnimeTime, 0f, 1.f) * 38f * RateY * cos(HALF_PI * n),
+            space.ListY(selected) + map(AnimeSlide, 0, space.AnimeTime, 0f, 1.f) * 38f * RateY * sin(HALF_PI * n),
+            16f * RateY * ((direction(dragX, dragY) == n * 2 && dist(mouseX, mouseY, dragX, dragY) >= space.r * space.radiusRate) ? 2f : 1f),
             (space.direction(n * 2, selected)) ? ((space.ListIsTurn(selected)) ? color(0, 100, 200) : color(200, 100, 0)) : color(128));
           arcText(((space.ListIsLocked(selected)) ? "" : ((space.ListIsTurn(selected)) ? "+" : "x")),
-            space.ListX(selected) + map(AnimeSlide, 0, space.AnimeTime, 0f, 1.f) * 38f * cos(PI / 4f + HALF_PI * n),
-            space.ListY(selected) + map(AnimeSlide, 0, space.AnimeTime, 0f, 1.f) * 38f * sin(PI / 4f + HALF_PI * n),
-            16f * ((direction(dragX, dragY) == n * 2 + 1 && dist(mouseX, mouseY, dragX, dragY) >= space.r * space.radiusRate) ? 2f : 1f),
+            space.ListX(selected) + map(AnimeSlide, 0, space.AnimeTime, 0f, 1.f) * 38f * RateY * cos(PI / 4f + HALF_PI * n),
+            space.ListY(selected) + map(AnimeSlide, 0, space.AnimeTime, 0f, 1.f) * 38f * RateY * sin(PI / 4f + HALF_PI * n),
+            16f * RateY * ((direction(dragX, dragY) == n * 2 + 1 && dist(mouseX, mouseY, dragX, dragY) >= space.r * space.radiusRate) ? 2f : 1f),
             (space.direction(n * 2 + 1, selected)) ? ((space.ListIsTurn(selected)) ? color(200, 100, 0) : color(0, 100, 200)) : color(128));
         }
       }
@@ -379,7 +426,7 @@ void draw() {
       }
       if(AnimeSlide == 0) selected = -1;
       
-      boxText(((isEdit) ? "TestPlay" : nf(playStage + 1, 2)) + " : " + space.comment, 8f, 8f, 24, width - 16, space.Color[0]);
+      boxText(((isEdit) ? "TestPlay" : nf(playStage + 1, 2)) + " : " + space.comment, 8f, 8f, int(24 * RateY), width - 16, space.Color[0]);
       
       
       if(HintTime > 0) {
@@ -388,12 +435,12 @@ void draw() {
           for(int n = 0; n <= min(HintID - 1, min( space.Hint.size() - 1, floor((( space.Hint.size() ) * 30 - HintTime) / 30))); n++) {
             pushStyle();
             stroke(255);
-            strokeWeight(5);
+            strokeWeight(5 * RateY);
             noFill();
             
             Swipe Hint = (Swipe) space.Hint.get(n);
             arc(Hint.x * space.r + space.x, Hint.y * space.r + space.y, space.r * 0.5f + 3f, space.r * 0.5f + 3f, 0f, TAU);
-            strokeWeight(1);
+            strokeWeight(1 * RateY);
             stroke(space.Color[9]);
             noFill();
             arc(Hint.x * space.r + space.x, Hint.y * space.r + space.y, space.r * 0.5f, space.r * 0.5f, 0f, TAU);
@@ -434,7 +481,7 @@ void draw() {
           
           noStroke();
           fill(lerpColor(space.Color[0], space.Color[9], float(abs(frameCount % 60 - 30)) / 30f), map(AnimeClear, 0, frameRate, 0f, 255f));
-          textSize(48);
+          textSize(48 * RateY);
           textAlign(LEFT, CENTER);
           for(int n = 0; n < Text.length(); n++) {
             
@@ -473,46 +520,58 @@ void draw() {
       RightMenu();
       break;
     case 3:
+      if(!isEdit) {
+        isEdit = true;
+        Edit = new Space(0f, 0f, 48f * RateY, color(0), color(0));
+      }
       Edit.setColor(LowColor, HighColor);
       Board.setColor(LowColor, HighColor);
+      Select.setColor(LowColor, HighColor);
       Edit.setComment(Title);
       
       fill(0);
-      textSize(18);
+      textSize(18 * RateX);
       textAlign(RIGHT, TOP);
-      text(((Title == "") ? "No Title (Input Name & Press Enter)" : "[ " + Title + " ]"), width - 10, 40);
+      text(((Title == "") ? "No Title (Input Name & Press Enter)" : "[ " + Title + " ]"), width - 10 * RateX, 40 * RateY);
       
       if(whichColor) HighColor = color(RedBar, GreenBar, BlueBar);
       else LowColor = color(RedBar, GreenBar, BlueBar);
       
-      if(button(width * .05f, height * .25f, 12f, LowColor, LowColor) || !whichColor) 
-        boxText("Lower Color", width * .09f, height * .25f - 6f, 12, 0, LowColor);
+      if(button(width * .05f, height * .25f, 12f * RateY, LowColor, LowColor) || !whichColor) 
+        boxText("Lower Color", width * .09f, height * .25f - 6f * RateY, int(12 * RateY), 0, LowColor);
       
-      if(button(width * .05f, height * .35f, 12f, HighColor, HighColor) || whichColor) 
-        boxText("Higher Color", width * .09f, height * .35f - 6f, 12, 0, HighColor);
+      if(button(width * .05f, height * .35f, 12f * RateY, HighColor, HighColor) || whichColor) 
+        boxText("Higher Color", width * .09f, height * .35f - 6f * RateY, int(12 * RateY), 0, HighColor);
       
       Edit.Draw(-1, 0);
       Board.Draw(-1, 0);
+      Select.Draw(-1, 0);
       
-      if(button(width * .9f, height * .9f, 24f, color(0), color(100))) 
-        boxText("Home", width * .7f, height * .9f, 12, 0, color(100));
+      if(button(width * .9f, height * .9f, 24f * RateY, color(0), color(100))) 
+        boxTextRight("Home", width * .8f, height * .9f, int(12 * RateY), 0, color(100));
       noStroke();
       fill(255);
-      home( width * .9f, height * .9f, 12f, 0f );
+      home( width * .9f, height * .9f, int(12f * RateY), 0f );
       
-      if(button(width * .9f, height * .73f, 24f, color(0), color(100))) 
-        boxText("Test Play", width * .7f, height * .73f, 12, 0, color(100));
+      if(button(width * .9f, height * .73f, int(24f * RateY), color(0), color(100))) {
+        boxTextRight("Test Play", width * .8f, height * .73f, int(12 * RateY), 0, color(100));
+        if(Edit.List.size() <= 1) boxTextRight("Deploy more Bubble", width * .8f, height * .73f + 20 * RateY, int(12 * RateY), 0, color(100));
+      }
       noStroke();
       fill(255);
-      note( width * .9f, height * .73f, 12f, 0f );
+      note( width * .9f, height * .73f, int(12f * RateY), 0f );
       
-      if(button(width * .9f, height * .56f, 24f, color(0), color(100))) 
-        boxText("Save", width * .7f, height * .56f, 12, 0, color(100));
+      if(button(width * .9f, height * .56f, int(24f * RateY), color(0), color(100))) { 
+        boxTextRight("Save", width * .8f, height * .56f, int(12 * RateY), 0, color(100));
+        if(!isTest) boxTextRight("Test didn't pass", width * .8f, height * .56f + 20 * RateY, int(12 * RateY), 0, color(100));
+      }
       noStroke();
       fill(255);
-      cardBoard( width * .9f, height * .56f - 2f, 12f + 2f, 0f );
-            
-      capsule("Current Bubble", width * .8f, height * .25f, 12, Edit.Color[BubbleNumber%10]);
+      cardBoard( width * .9f, height * .56f - 2f, int((12f + 2f) * RateY), 0f );
+      
+      capsule("Current Bubble", Select.ListX(0) - 30 * RateX, Select.ListY(0) - 24 * RateY, int(12 * RateY), Edit.Color[BubbleNumber%10]);
+      if(Select.inRange(0)) boxTextRight("Camera will be optimized", Select.ListX(0) - 28 * RateX, Select.ListY(0) - 6 * RateY, int(12 * RateY), 0, Select.Color[BubbleNumber%10]);
+      
       
       break;
   }
@@ -559,25 +618,25 @@ void mousePressed() {
       snd[10].cue(100);
       break;
     case 1:
-      if(dist(mouseX, mouseY, width * .1f, height * .6f) < 24f && selectSea != 0) {
+      if(dist(mouseX, mouseY, width * .1f, height * .6f) < 24f * RateY && selectSea != 0) {
         selectSea = constrain(selectSea - 1, 0, floor(stage.size() / 8));
         seaSlide = -width;
         snd[9].play();
         snd[9].cue(100);
         
       }
-      if(dist(mouseX, mouseY, width * .9f, height * .6f) < 24f && selectSea != ceil((stage.size() - 1) / 8)) {
+      if(dist(mouseX, mouseY, width * .9f, height * .6f) < 24f * RateY && selectSea != ceil((stage.size() - 1) / 8)) {
         selectSea = constrain(selectSea + 1, 0, ceil((stage.size() - 1) / 8));
         seaSlide = width;
         snd[9].play();
         snd[9].cue(100);
       }
-      if(dist(mouseX, mouseY, width * .9f, height * .1f) < 24f) {
+      if(dist(mouseX, mouseY, width * .9f, height * .1f) < 24f * RateY) {
         mode = 3;
       }
       
       for(int n = 0; n < 8; n++) {
-        if(dist(mouseX, mouseY, width * arrayX[n], height * arrayY[n]) < 24f && n + selectSea * 8 < stage.size()) {
+        if(dist(mouseX, mouseY, width * arrayX[n], height * arrayY[n]) < 24f * RateY && n + selectSea * 8 < stage.size()) {
             playStage = n + selectSea * 8;
             space.Copy((Space) stage.get(playStage));
             mode = 2;
@@ -598,7 +657,7 @@ void mousePressed() {
       
       for(int n = 0; n < 4; n++) {
         if(isOverMenuLeft) {
-          if(dist(mouseX, mouseY, menuRadius / 2f, height - menuRadius * (float(n) + 0.5f)) < menuRadius * 0.3f) {
+          if(dist(mouseX, mouseY, menuRadius / 2f, height - menuRadius * (float(n) + 0.5f)) < menuRadius * 0.3f * RateY) {
             
             snd[7].play();
             snd[7].cue(50);
@@ -637,7 +696,7 @@ void mousePressed() {
         }
         
         if(isOverMenuRight) {
-          if(dist(mouseX, mouseY, width - menuRadius / 2f, height - menuRadius * (float(n) + 0.5f)) < menuRadius * 0.3f) {
+          if(dist(mouseX, mouseY, width - menuRadius / 2f, height - menuRadius * (float(n) + 0.5f)) < menuRadius * 0.3f * RateY) {
             
             snd[7].play();
             snd[7].cue(50);
@@ -670,20 +729,23 @@ void mousePressed() {
       break;
     case 3:
       boolean isChanged = false;
-      if(distMouse(width * .9f, height * .9f, 24f)) {
+      if(distMouse(width * .9f, height * .9f, 24f * RateY)) {
         mode = 1;
+        isEdit = false;
         isChanged = true;
       }
       
-      if(distMouse(width * .9f, height * .73f, 24f)) {
-        mode = 2;
-        isEdit = true;
-        space.Copy(Edit);
-        space.optimis();
+      if(distMouse(width * .9f, height * .73f, 24f * RateY)) {
+        if(Edit.List.size() > 1) {
+          mode = 2;
+          isEdit = true;
+          space.Copy(Edit);
+          space.optimis();
+        }
         isChanged = true;
       }
       
-      if(distMouse(width * .9f, height * .56f, 24f)) {
+      if(distMouse(width * .9f, height * .56f, 24f * RateY)) {
         //保存処理
         if(isTest && !Edit.comment.equals("")) {
           Edit.optimis();
@@ -724,14 +786,15 @@ void mousePressed() {
         isChanged = true;
       }
       
-      if(distMouse(width * .05f, height * .25f, 12f)) {
+      if(distMouse(width * .05f, height * .25f, 12f * RateY)) {
         whichColor = false;
         cp5.getController("RedBar").setValue(int(red(LowColor)));
         cp5.getController("GreenBar").setValue(int(green(LowColor)));
         cp5.getController("BlueBar").setValue(int(blue(LowColor)));
+        
         isChanged = true;
       }
-      if(distMouse(width * .05f, height * .35f, 12f)) {
+      if(distMouse(width * .05f, height * .35f, 12f * RateY)) {
         whichColor = true;
         cp5.getController("RedBar").setValue(int(red(HighColor)));
         cp5.getController("GreenBar").setValue(int(green(HighColor)));
@@ -746,18 +809,21 @@ void mousePressed() {
         }
       }
       
-      if(Board.inRange(10)) { BubbleMode = 2; isChanged = true; }
-      if(Board.inRange(11)) { BubbleMode = 1; isChanged = true; }
-      if(Board.inRange(12)) { BubbleMode = 0; isChanged = true; }
+      if(Select.inRange(0)) { Edit.optimis(); isChanged = true; }
+      if(Board.inRange(9)) { BubbleMode = 2; isChanged = true; }
+      if(Board.inRange(10)) { BubbleMode = 1; isChanged = true; }
+      if(Board.inRange(11)) { BubbleMode = 0; isChanged = true; }
       
-      for(int n = 0; n < 10; n++) {
+      for(int n = 0; n < 9; n++) {
         ((Number) Board.List.get(n)).isTurn = (BubbleMode == 1);
         ((Number) Board.List.get(n)).isLocked = (BubbleMode == 2);
         
       }
-      ((Number) Board.List.get(9)).num = max(1, BubbleNumber);
+      ((Number) Select.List.get(0)).isTurn = (BubbleMode == 1);
+      ((Number) Select.List.get(0)).isLocked = (BubbleMode == 2);
+      ((Number) Select.List.get(0)).num = max(1, BubbleNumber);
       
-      if(0 <= mouseX && 150 >= mouseX && 0 <= mouseY && mouseY <= 50) isChanged = true;
+      if(0 <= mouseX && 150 * RateX >= mouseX && 0 <= mouseY && mouseY <= 50 * RateX) isChanged = true;
       if(cp5.getController("RedBar").isMouseOver()) isChanged = true;
       if(cp5.getController("GreenBar").isMouseOver()) isChanged = true;
       if(cp5.getController("BlueBar").isMouseOver()) isChanged = true;

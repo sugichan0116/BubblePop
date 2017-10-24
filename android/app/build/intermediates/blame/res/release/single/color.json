@@ -1,0 +1,102 @@
+[
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_hint_foreground_material_light.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_hint_foreground_material_light.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_tint_spinner.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_tint_spinner.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\design_error.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\9b94e84ffcf807712642e86bc3eaa2426f14557b\\output\\res\\color\\design_error.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\circular_button.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\a4d5aef6b3dee2cbf6178e9dbe02b1ee8667bab9\\output\\res\\color\\circular_button.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_primary_text_material_light.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_primary_text_material_light.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_secondary_text_material_dark.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_secondary_text_material_dark.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_tint_switch_thumb.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_tint_switch_thumb.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_btn_colored_text_material.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_btn_colored_text_material.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\card_grey_text_color.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\a4d5aef6b3dee2cbf6178e9dbe02b1ee8667bab9\\output\\res\\color\\card_grey_text_color.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_tint_edittext.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_tint_edittext.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_hint_foreground_material_dark.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_hint_foreground_material_dark.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\card_text_color.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\a4d5aef6b3dee2cbf6178e9dbe02b1ee8667bab9\\output\\res\\color\\card_text_color.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_btn_colored_borderless_text_material.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_btn_colored_borderless_text_material.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\switch_thumb_material_dark.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\switch_thumb_material_dark.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_search_url_text.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_search_url_text.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_primary_text_disable_only_material_light.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_primary_text_disable_only_material_light.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_tint_seek_thumb.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_tint_seek_thumb.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_tint_btn_checkable.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_tint_btn_checkable.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_primary_text_disable_only_material_dark.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_primary_text_disable_only_material_dark.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_tint_default.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_tint_default.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\switch_thumb_material_light.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\switch_thumb_material_light.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_tint_switch_track.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_tint_switch_track.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_primary_text_material_dark.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_primary_text_material_dark.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\abc_secondary_text_material_light.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\905bcb5c5fad7ba64a031a65e87cf4f2666cd03d\\output\\res\\color\\abc_secondary_text_material_light.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\release\\color\\design_tint_password_toggle.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\9b94e84ffcf807712642e86bc3eaa2426f14557b\\output\\res\\color\\design_tint_password_toggle.xml"
+    }
+]

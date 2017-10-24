@@ -1,0 +1,30 @@
+[
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\debug\\anim-v21\\design_bottom_sheet_slide_out.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\9b94e84ffcf807712642e86bc3eaa2426f14557b\\output\\res\\anim-v21\\design_bottom_sheet_slide_out.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\debug\\anim-v21\\generic_confirmation_icon_animation.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\a4d5aef6b3dee2cbf6178e9dbe02b1ee8667bab9\\output\\res\\anim-v21\\generic_confirmation_icon_animation.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\debug\\anim-v21\\generic_confirmation_generic_confirmation_animation.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\a4d5aef6b3dee2cbf6178e9dbe02b1ee8667bab9\\output\\res\\anim-v21\\generic_confirmation_generic_confirmation_animation.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\debug\\anim-v21\\open_on_phone_arrow_animation.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\a4d5aef6b3dee2cbf6178e9dbe02b1ee8667bab9\\output\\res\\anim-v21\\open_on_phone_arrow_animation.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\debug\\anim-v21\\open_on_phone_path_2_animation.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\a4d5aef6b3dee2cbf6178e9dbe02b1ee8667bab9\\output\\res\\anim-v21\\open_on_phone_path_2_animation.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\debug\\anim-v21\\design_bottom_sheet_slide_in.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\9b94e84ffcf807712642e86bc3eaa2426f14557b\\output\\res\\anim-v21\\design_bottom_sheet_slide_in.xml"
+    },
+    {
+        "merged": "C:\\Users\\UnderStand\\Documents\\Processing\\BubblePop\\android\\app\\build\\intermediates\\res\\merged\\debug\\anim-v21\\open_on_phone_path_1_animation.xml",
+        "source": "C:\\Users\\UnderStand\\.android\\build-cache\\a4d5aef6b3dee2cbf6178e9dbe02b1ee8667bab9\\output\\res\\anim-v21\\open_on_phone_path_1_animation.xml"
+    }
+]

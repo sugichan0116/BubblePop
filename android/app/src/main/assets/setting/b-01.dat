@@ -1,0 +1,8 @@
+[comment]
+New Bubble is Reversed !
+[color]
+180, 100, 240, 90, 50, 120
+[number]
+5, 0, 0, false, false
+5, 0, 2, false, false
+5, 2, 2, true, false

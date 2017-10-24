@@ -17,7 +17,7 @@ void LeftMenu() {
           height - menuRadius * (float(n) + 0.5f), menuRadius * 0.6f + 4f, menuRadius * 0.6f + 4f, 0f, TAU);
           noStroke();
           fill(space.Color[9 - n]);
-          boxText(MenuText[n], menuRadius, mouseY, 12, 0, space.Color[9 - n]);
+          boxText(MenuText[n], menuRadius, mouseY, int(12 * RateY), 0, space.Color[9 - n]);
          
         }
       }
@@ -50,10 +50,10 @@ void LeftMenu() {
       
       pushStyle();
         textAlign(RIGHT, BOTTOM);
-        textSize(18);
+        textSize(18 * RateY);
         fill(space.Color[0]);
         noStroke();
-        text("History : " + currentHistory + " / " + History.size(), width + map(AnimeMenuLeft, 0, space.AnimeTime, width * .4f, 0), height);
+        text("History : " + currentHistory + " / " + History.size(), width + map(AnimeMenuLeft, 0, space.AnimeTime, width * .4f, 0) * RateY, height);
       popStyle();
       
       if(AnimeMenuLeft == space.AnimeTime / 2f) {
@@ -95,7 +95,7 @@ void RightMenu() {
           height - menuRadius * (float(n) + 0.5f), menuRadius * 0.6f + 4f, menuRadius * 0.6f + 4f, 0f, TAU);
           noStroke();
           fill(space.Color[n]);
-          boxText(MenuText[n], width - menuRadius * 1.5f, mouseY, 12, 0, space.Color[n]);
+          boxTextRight(MenuText[n], width - menuRadius * 1.0f, mouseY, int(12 * RateY), 0, space.Color[n]);
           
         }
       }
@@ -203,6 +203,32 @@ void boxText(String Text, float x, float y, int fontSize, int maxWidth, color Co
   }
   popStyle();
 }
+
+void boxTextRight(String Text, float x, float y, int fontSize, int maxWidth, color Color) {
+  pushStyle();
+  {
+    textSize(fontSize);
+    if(maxWidth > 0) {
+      if(textWidth(Text) > maxWidth) {
+        fontSize = int(maxWidth / textWidth(Text) * fontSize);
+        textSize(fontSize);
+      }
+    }
+    float shift = textWidth(Text);
+    noStroke();
+    fill(Color);
+    rect(x - shift, y, textWidth(Text), fontSize);
+    stroke(Color);
+    noFill();
+    rect(x - 2f - shift, y - 2f, textWidth(Text) + 4f, fontSize + 3f);
+    noStroke();
+    fill(255);
+    textAlign(LEFT, TOP);
+    text(Text, x - shift, y - 2);
+  }
+  popStyle();
+}
+
 
 void arcText(String c, float x, float y, float r, color Color) {
   pushStyle();
