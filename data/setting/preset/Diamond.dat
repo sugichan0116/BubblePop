@@ -1,0 +1,21 @@
+[comment]
+Diamond
+[color]
+32, 179, 42, 104, 134, 147
+[number]
+2, 3, 3, false, false
+5, 3, 1, false, false
+6, 1, 3, false, false
+8, 2, 0, false, true
+3, 0, 2, false, false
+1, 1, 1, true, false
+7, 2, 4, true, false
+4, 4, 2, false, true
+[hint]
+1, 1, 1
+3, 3, 6
+2, 4, 7
+4, 2, 4
+1, 3, 5
+0, 2, 7
+2, 0, 1

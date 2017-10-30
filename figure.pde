@@ -66,7 +66,12 @@ void capsule(String Text, float x, float y, int fontSize, color Color) {
   popStyle();
 }
 
+void DeleteIcon(float x, float y, float r, float Angle) {
 
+    for(int n = 0; n < 8; n++) {
+      capsule( x + r * .8f * cos(radians(45 * n)), y + r * .8f * sin(radians(45 * n)), r * .8f, r * .2f, Angle + radians(45 * n));
+    }
+}
 
 void arrow(float x, float y, float r, float Angle) {
   pushMatrix();

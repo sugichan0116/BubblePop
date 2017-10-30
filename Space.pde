@@ -8,6 +8,7 @@ class Space {
   int AnimeMove;
   String comment;
   ArrayList Hint;
+  boolean isClear;
   Space() {
     List = new ArrayList();
     Color = new color[10];
@@ -20,6 +21,7 @@ class Space {
     AnimeMove = 0;
     comment = "";
     Hint = new ArrayList();
+    isClear = false;
   }
   Space(float X, float Y, float R, color LowColor, color HighColor) {
     x = X;
@@ -37,6 +39,7 @@ class Space {
     AnimeMove = 0;
     comment = "";
     Hint = new ArrayList();
+    isClear = false;
   }
   void setColor(color LowColor, color HighColor) {
     for(int n = 0; n < 10; n++) {
@@ -69,13 +72,16 @@ class Space {
     r = origin.r;
     comment = origin.comment;
     AnimeMove = 0;
+    CopyHint(origin);
+    isClear = false;
+  }
+  void CopyHint(Space origin) {
     Hint.clear();
     for(int n = 0; n < origin.Hint.size(); n++) {
       Swipe Buf = new Swipe();
       Buf.Copy((Swipe) origin.Hint.get(n));
       Hint.add(Buf);
     }
-    
   }
   boolean Draw(int MoveDirection, int selectID) {
     int moveX = 0, moveY = 0;
@@ -138,6 +144,8 @@ class Space {
     }
     return moveFlag;
   }
+  
+  
   void afterProcess() {
     for(int n = 0; n < List.size(); n++) {
       ((Number) List.get(n)).afterProcess();

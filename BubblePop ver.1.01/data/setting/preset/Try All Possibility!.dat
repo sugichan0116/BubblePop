@@ -1,0 +1,11 @@
+[comment]
+Try All Possibility!
+[color]
+149, 10, 60, 218, 44, 149
+[number]
+3, 0, 1, false, false
+4, 1, 0, false, false
+2, 1, 1, false, false
+[hint]
+1, 1, 4
+0, 1, 7

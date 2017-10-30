@@ -1,0 +1,13 @@
+[comment]
+Pentomino
+[color]
+94, 200, 201, 210, 144, 172
+[number]
+1, 0, 0, false, false
+9, 1, 1, false, false
+8, 2, 0, false, false
+2, 1, 0, true, false
+[hint]
+1, 1, 6
+0, 0, 0
+1, 0, 0

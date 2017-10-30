@@ -1,0 +1,13 @@
+[comment]
+The Key is Bubble's Rays.
+[color]
+211, 104, 255, 110, 34, 187
+[number]
+8, 0, 0, false, false
+3, 2, 2, false, false
+4, 2, 1, false, false
+2, 1, 1, false, false
+[hint]
+1, 1, 0
+0, 0, 1
+2, 1, 2

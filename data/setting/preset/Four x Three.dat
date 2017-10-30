@@ -1,0 +1,13 @@
+[comment]
+Four x Three
+[color]
+117, 104, 204, 29, 206, 168
+[number]
+3, 1, 1, false, false
+3, 2, 0, false, false
+3, 0, 0, true, false
+3, 3, 0, true, false
+[hint]
+0, 0, 0
+3, 0, 4
+2, 0, 3

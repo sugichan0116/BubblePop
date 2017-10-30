@@ -1,0 +1,16 @@
+[comment]
+Luxury Car of the Black
+[color]
+0, 0, 0, 61, 62, 62
+[number]
+3, 2, 0, false, false
+9, 0, 1, false, false
+3, 1, 1, false, true
+8, 0, 0, false, false
+1, 2, 1, false, true
+9, 1, 0, false, false
+[hint]
+2, 0, 4
+1, 0, 2
+1, 1, 5
+0, 1, 0

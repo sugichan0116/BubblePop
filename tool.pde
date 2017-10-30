@@ -1,4 +1,102 @@
 
+void setBarRGB(color Color) {
+  cp5.getController("RedBar").setValue(int(red(Color)));
+  cp5.getController("GreenBar").setValue(int(green(Color)));
+  cp5.getController("BlueBar").setValue(int(blue(Color)));
+        
+}
+
+color MixColor(float rate, color baseColor, color mixColor) {
+  return color((rate * red(baseColor) + (1 - rate) * red(mixColor)),
+    (rate * green(baseColor) + (1 - rate) * green(mixColor)),
+    (rate * blue(baseColor) + (1 - rate) * blue(mixColor)));
+}
+
+void IndexSort() {
+  //統括ファイルに追加
+  try {
+    BufferedWriter file = new BufferedWriter(new FileWriter(dataPath("") + "//setting/data.dat", false));
+    for(int k = 0; k < stage.size(); k++) {
+      file.write(((Space) stage.get(k)).comment + ".dat");
+      file.newLine();
+    }
+    file.close();
+  } catch (IOException e) {
+    e.printStackTrace();
+  }
+  
+  FileLoad();
+}
+
+void FileLoad() {
+  //ステージ読み込み
+  space = new Space();
+  stage = new ArrayList();
+  History = new ArrayList();
+  currentHistory = 0;
+  isValidHistory = false;
+  
+  fileOver = loadStrings(dataPath("") + "//setting/data.dat");
+  
+  for(int fileNum = 0; fileNum < fileOver.length; fileNum++){
+    //１ファイル読み込み
+    if(fileOver[fileNum].equals("")) continue;
+    try {
+      reader = loadStrings(dataPath("") + "//setting/" + fileOver[fileNum]);
+    } catch(Exception e) {
+      continue;
+    }
+    
+    String lineString;
+    Space fileSpace = new Space();
+    int lineNum = 0;
+    int entry = -1;
+    String[] heading = { "[comment]", "[color]", "[number]", "[hint]" };
+    boolean isChanged = false;
+    
+    while(true) {
+      lineString = reader[lineNum];
+      isChanged = false;
+      
+      for(int n = 0; n < heading.length; n++) {
+        if(lineString.equals(heading[n])) { entry = n; lineNum++; isChanged = true; break; }
+      }
+      if(isChanged) {
+        continue;
+      }
+      
+      //println(lineString);
+      String[] comp = split(lineString, ", ");
+      switch(entry) {
+        case 0:
+          if(comp.length != 1) break;
+          fileSpace.setComment(comp[0]);
+          break;
+        case 1:
+          if(comp.length != 6) break;
+          fileSpace.setColor(color(int(comp[0]), int(comp[1]), int(comp[2])),
+            color(int(comp[3]), int(comp[4]), int(comp[5])));
+          break;
+        case 2:
+          if(comp.length != 5) break;
+          fileSpace.List.add(new Number(int(comp[0]), int(comp[1]), int(comp[2]),
+            boolean(comp[3]), boolean(comp[4]) ));
+          break;
+        case 3:
+          if(comp.length != 3) break;
+          fileSpace.setHint(int(comp[0]), int(comp[1]), int(comp[2]));
+          //println(lineString + "/" + comp[0] + "/" + comp[2]);
+          break;
+      }
+      lineNum++;
+      if(lineNum == reader.length) break;
+    }
+    fileSpace.optimis();
+    stage.add(fileSpace);
+  }
+}
+
+
 void LeftMenu() {
   //左メニュー
   {
@@ -67,7 +165,7 @@ void LeftMenu() {
       
       AnimeMenuLeft = constrain(AnimeMenuLeft + 1, 0, space.AnimeTime);
     } else {
-      if(mouseX < menuRadius) {
+      if(mouseX < menuRadius || mouseStop > 60) {
         isOverMenuLeft = true;
       } else {
         AnimeMenuLeft = constrain(AnimeMenuLeft - 1, 0, space.AnimeTime);
@@ -133,7 +231,7 @@ void RightMenu() {
       
       AnimeMenuRight = constrain(AnimeMenuRight + 1, 0, space.AnimeTime);
     } else {
-      if(mouseX > width - menuRadius) {
+      if(mouseX > width - menuRadius || mouseStop > 60) {
         isOverMenuRight = true;
       } else {
         AnimeMenuRight = constrain(AnimeMenuRight - 1, 0, space.AnimeTime);

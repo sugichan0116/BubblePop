@@ -1,0 +1,13 @@
+[comment]
+Odd Number gone out
+[color]
+134, 99, 60, 219, 146, 71
+[number]
+3, 0, 0, false, false
+5, 2, 0, false, false
+7, 1, 1, false, false
+9, 3, 1, false, false
+[hint]
+3, 1, 4
+0, 0, 1
+1, 1, 7

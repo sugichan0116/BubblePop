@@ -1,0 +1,19 @@
+[comment]
+One of Fun.
+[color]
+50, 144, 87, 209, 198, 46
+[number]
+1, 0, 3, false, false
+1, 0, 0, false, false
+1, 1, 3, false, false
+1, 1, 1, false, false
+1, 2, 0, false, false
+1, 3, 1, false, false
+1, 3, 2, true, false
+[hint]
+0, 3, 6
+0, 0, 0
+1, 3, 6
+1, 1, 0
+2, 0, 1
+3, 1, 2

@@ -1,0 +1,15 @@
+[comment]
+Orange
+[color]
+219, 99, 60, 230, 192, 25
+[number]
+4, 2, 0, false, false
+6, 1, 0, false, false
+2, 0, 2, false, false
+8, 0, 1, false, false
+2, 1, 1, true, false
+[hint]
+1, 1, 6
+2, 0, 4
+1, 0, 3
+0, 1, 2
