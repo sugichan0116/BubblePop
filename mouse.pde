@@ -108,7 +108,7 @@ void mousePressed() {
         
       for(int n = 0; n < 4; n++) {
         if(isOverMenuLeft) {
-          if(dist(mouseX, mouseY, menuRadius / 2f, height - menuRadius * (float(n) + 0.5f)) < menuRadius * 0.3f * RateY) {
+          if(dist(mouseX, mouseY, menuRadius / 2f, height - menuRadius * (float(n) + 0.5f)) < menuRadius * 0.3f) {
             
             snd[7].play();
             snd[7].cue(50);
@@ -140,7 +140,7 @@ void mousePressed() {
                 break;
               case 3:
                 if(isEdit) break;
-                HintTime = 30 * ( space.Hint.size() + 1);
+                HintTime += ((HintTime == 0) ? 30 * ( space.Hint.size() + 1) : 0);
                 HintID++;
                 break;
             }
@@ -148,7 +148,7 @@ void mousePressed() {
         }
         
         if(isOverMenuRight) {
-          if(dist(mouseX, mouseY, width - menuRadius / 2f, height - menuRadius * (float(n) + 0.5f)) < menuRadius * 0.3f * RateY) {
+          if(dist(mouseX, mouseY, width - menuRadius / 2f, height - menuRadius * (float(n) + 0.5f)) < menuRadius * 0.3f) {
             
             snd[7].play();
             snd[7].cue(50);

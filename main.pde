@@ -15,6 +15,9 @@ void draw() {
     for(Object Buf :stage) {
       ((Space) Buf).optimis();
     }
+    for(Object Buf :History) {
+      ((Space) Buf).optimis();
+    }
     Edit.optimis();
     cp5.getController("RedBar").setSize(int(128 * RateX), int(10 * RateY));
     cp5.getController("RedBar").setPosition(int(10 * RateX), int(10 * RateY));
@@ -226,7 +229,7 @@ void draw() {
       }
       
       if(space.Draw(MoveDirection, MoveID)) MoveDirection = MoveID = -1;
-      if(AnimeSlide > 0) { //selected >= 0) {
+      if(AnimeSlide > 0 && selected > -1) { //selected >= 0) {
         for(int n = 0; n < 4; n++) {
           arcText(((space.ListIsLocked(selected)) ? "" : ((space.ListIsTurn(selected)) ? "x" : "+")),
             space.ListX(selected) + map(AnimeSlide, 0, space.AnimeTime, 0f, 1.f) * 38f * RateY * cos(HALF_PI * n),

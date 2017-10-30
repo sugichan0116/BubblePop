@@ -1,0 +1,13 @@
+[comment]
+NullPointerException
+[color]
+236, 99, 80, 200, 222, 93
+[number]
+8, 2, 0, false, false
+5, 1, 2, false, false
+7, 0, 0, false, true
+7, 1, 1, false, false
+[hint]
+2, 0, 4
+0, 0, 1
+1, 1, 2
