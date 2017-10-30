@@ -274,11 +274,11 @@ void draw() {
             fill(space.Color[9]);
             noStroke();
             vectorArrow(Hint.x * space.r + space.x, Hint.y * space.r + space.y, int((64f) * RateY), radians(45 * Hint.d));
-            capsule("One More Tap will show More Hint!", width * .5f, height * .15f, int(12 * RateY), space.Color[9]);
+            capsule("Click to get *More Hint* !", width * .5f, height * .15f, int(12 * RateY), space.Color[9]);
             popStyle();
           }
         } else {
-          capsule("Show Hint to Reset or Hint doesn't exsist.", width * .5f, height * .15f, int(12 * RateY), 0);
+          capsule("Show Hint to \"Reset\".", width * .5f, height * .15f, int(12 * RateY), 0);
         }
       }
       
@@ -287,6 +287,7 @@ void draw() {
       if(space.isClear() || space.isFailed()) {
         if(AnimeClear == 1) {
           if(space.isClear()) {
+            ((Space) stage.get(playStage)).isClear = true;
             snd[1].play();
             snd[1].rewind();
           }
@@ -326,7 +327,6 @@ void draw() {
             Edit.CopyHint(space);
             //hint生成
           } else {
-            ((Space) stage.get(playStage)).isClear = true;
             if(space.isClear()) playStage++;
             playStage %= stage.size();
             space.Copy((Space) stage.get(playStage));
@@ -358,7 +358,7 @@ void draw() {
       fill(0);
       textSize(18 * RateX);
       textAlign(RIGHT, TOP);
-      text(((Title == "") ? "No Title (Input Name & Press Enter)" : "[ " + Title + " ]"), width - 10 * RateX, 40 * RateY);
+      text(((Title == "") ? "No Title - *Press Enter* to Save" : "[ " + Title + " ]"), width - 10 * RateX, 40 * RateY);
       
       if(whichColor) HighColor = color(RedBar, GreenBar, BlueBar);
       else LowColor = color(RedBar, GreenBar, BlueBar);
@@ -381,7 +381,7 @@ void draw() {
       
       if(button(width * .9f, height * .73f, int(24f * RateY), color(0), color(100))) {
         boxTextRight("Test Play", width * .8f, height * .73f, int(12 * RateY), 0, color(100));
-        if(Edit.List.size() <= 1) boxTextRight("Deploy more Bubble", width * .8f, height * .73f + 20 * RateY, int(8 * RateY), 0, color(100));
+        if(Edit.List.size() <= 1) boxTextRight("#Deploy more Bubble", width * .8f, height * .73f + 20 * RateY, int(8 * RateY), 0, color(100));
       }
       noStroke();
       fill(255);
@@ -389,8 +389,8 @@ void draw() {
       
       if(button(width * .9f, height * .56f, int(24f * RateY), color(0), color(100))) { 
         boxTextRight("Save", width * .8f, height * .56f, int(12 * RateY), 0, color(100));
-        if(!isTest) boxTextRight("Test didn't pass", width * .8f, height * .56f + 20 * RateY, int(8 * RateY), 0, color(100));
-        if(Edit.comment.equals("")) boxTextRight("Name this Stage", width * .8f, height * .60f + 20 * RateY, int(8 * RateY), 0, color(100));
+        if(!isTest) boxTextRight("#Test didn't pass", width * .8f, height * .56f + 20 * RateY, int(8 * RateY), 0, color(100));
+        if(Edit.comment.equals("")) boxTextRight("#Name this Stage", width * .8f, height * .60f + 20 * RateY, int(8 * RateY), 0, color(100));
         
       }
       noStroke();

@@ -68,7 +68,8 @@ boolean isTest = false;
 float RateX, RateY;
 int screenPreWidth = 0, screenPreHeight = 0;
 int StageAction = 0;
-String[] StageActionDescription = {"Play to Select", "Edit to Select", "Shift Right", "Shift Left", "Remove to Select"};
+String[] StageActionDescription = 
+  {"Play Mode", "Edit Mode", "Move Right", "Move Left", "*Remove* Mode"};
 int SavedAnime = 0;
 
 PImage[] help;

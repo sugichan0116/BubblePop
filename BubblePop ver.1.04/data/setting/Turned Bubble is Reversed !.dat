@@ -1,0 +1,11 @@
+[comment]
+Turned Bubble is Reversed !
+[color]
+178, 106, 233, 113, 61, 149
+[number]
+3, 0, 2, false, false
+1, 1, 2, true, false
+7, 2, 0, false, false
+[hint]
+1, 2, 4
+0, 2, 7
