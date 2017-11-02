@@ -184,7 +184,7 @@ void mousePressed() {
       if(distMouse(width * .9f, height * .9f, 24f * RateY)) {
         snd[5].play(); snd[5].cue(100);
         mode = 1;
-        isEdit = whichColor = false;
+        isEdit = isTest = whichColor = false;
         setBarRGB(LowColor);
         isChanged = true;
         FileLoad();

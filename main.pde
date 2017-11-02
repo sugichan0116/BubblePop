@@ -288,6 +288,7 @@ void draw() {
         if(AnimeClear == 1) {
           if(space.isClear()) {
             ((Space) stage.get(playStage)).isClear = true;
+            if(isEdit) isTest = true;
             snd[1].play();
             snd[1].rewind();
           }
@@ -323,7 +324,6 @@ void draw() {
           AnimeClear = 0;
           if(isEdit) {
             mode = 3;
-            isTest = true;
             Edit.CopyHint(space);
             //hint生成
           } else {

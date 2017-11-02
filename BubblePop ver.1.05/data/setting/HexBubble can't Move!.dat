@@ -1,0 +1,11 @@
+[comment]
+HexBubble can't Move!
+[color]
+236, 99, 80, 107, 189, 98
+[number]
+7, 2, 0, false, true
+3, 0, 0, false, true
+1, 1, 1, false, false
+[hint]
+1, 1, 5
+0, 0, 0

@@ -55,7 +55,12 @@ void FileLoad() {
     boolean isChanged = false;
     
     while(true) {
-      lineString = reader[lineNum];
+      try {
+        lineString = reader[lineNum];
+      } catch(ArrayIndexOutOfBoundsException e) {
+        break;
+      }
+      println(lineString);
       isChanged = false;
       
       for(int n = 0; n < heading.length; n++) {
